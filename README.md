@@ -20,6 +20,84 @@ This guide will walk through **every step**, explaining how we structured our pr
 
 ---
 
+## 🚀 What is Express.js & Why Are We Using It?
+
+### **What is Express.js?**  
+**Express.js** is a **minimal and flexible** web application framework for **Node.js**. It simplifies the process of handling HTTP requests and responses.
+
+### **Why Are We Using Express.js?**  
+1. **Simplifies Routing**  
+   - Instead of manually handling HTTP requests using Node's built-in `http` module, Express provides a cleaner and more intuitive way to define routes.  
+   - Example:  
+     ```js
+     app.get("/", (req, res) => {
+         res.send("Hello, World!");
+     });
+     ```
+     Without Express, this would require **more complex** code using Node’s `http` module.
+
+2. **Built-in Middleware**  
+   - Express has built-in middleware (like `express.json()`) that helps in **parsing request data** (e.g., JSON).
+   - Without Express, we would manually parse incoming request bodies.
+
+3. **Supports Routing and APIs Easily**  
+   - Express makes it easy to create RESTful APIs.
+   - Example of handling a GET request:
+     ```js
+     app.get("/users", (req, res) => {
+         res.json([{ name: "Alice" }, { name: "Bob" }]);
+     });
+     ```
+   - Without Express, we’d have to manually parse the URL, method, and response type.
+
+4. **Middleware Support**  
+   - Express allows **custom middleware**, which helps in tasks like logging, authentication, and error handling.
+
+5. **Scalability & Performance**  
+   - Express is **lightweight and fast**.  
+   - It can handle large-scale applications efficiently.
+
+---
+
+### **Can We Run Node.js Without Express?**  
+Yes, **Node.js can run without Express**. However, it requires **more manual work**. For example:
+
+#### **Basic HTTP Server Without Express**  
+```js
+const http = require("http");
+
+const server = http.createServer((req, res) => {
+    if (req.url === "/" && req.method === "GET") {
+        res.writeHead(200, { "Content-Type": "text/plain" });
+        res.end("Hello, World!");
+    } else {
+        res.writeHead(404, { "Content-Type": "text/plain" });
+        res.end("Not Found");
+    }
+});
+
+server.listen(5000, () => {
+    console.log("Server running on http://localhost:5000");
+});
+```
+🔴 **Problems Without Express:**  
+- We have to manually handle **routes, request types, and responses**.
+- No built-in middleware for handling JSON or form data.
+- Code becomes **longer** and **harder to maintain** as the project grows.
+
+---
+
+### **Is Express Necessary for Node.js?**  
+❌ **Not necessary**, but ✅ **highly recommended** for:  
+✔ **Simplifying HTTP handling**  
+✔ **Creating REST APIs easily**  
+✔ **Using middleware for authentication, logging, etc.**  
+✔ **Better code readability & maintainability**  
+
+So, while you **can** run Node.js without Express, **using Express is the best practice** for building web applications and APIs efficiently.
+
+---
+
 ## 📂 Project Folder Structure (Step-by-Step)
 
 ### **Step 1: Initialize Node.js Project**
@@ -179,6 +257,32 @@ node server.js
 
 ### **Step 6: Stop the Server in Mac (if needed)**
 
+```sh
+pkill -f node
+```
+
+---
+
+### **Step 7: Install & Use Nodemon (Auto Restart Server)**
+
+Nodemon is a tool that **automatically restarts** the server whenever you make changes to the files. This eliminates the need to manually stop and restart the server.
+
+#### **1️⃣ Install Nodemon Globally**
+```sh
+npm install -g nodemon
+```
+
+#### **2️⃣ Run the Server with Nodemon**
+```sh
+nodemon server.js
+```
+
+#### **3️⃣ Test Nodemon**
+- Start the server using `nodemon server.js`
+- Make a small change in `server.js`, like updating the console log message.
+- Save the file, and **Nodemon will automatically restart the server!**
+
+#### **4️⃣ Stop the Server (if needed)**
 ```sh
 pkill -f node
 ```
