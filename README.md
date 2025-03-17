@@ -395,9 +395,9 @@ Create the `index.ejs` file inside the `views/` folder and add the following cod
 ```
 ---
 
-## 📌 Step 12: Writing CSS and updating `index.ejs` and `server.js`
+## 📌 Step 12: Writing CSS and JS and updating `index.ejs` and `server.js`
 ### Create a `public/` Folder 
-To include **CSS styling**, we need a `public/` folder to store static files.
+To include **CSS styling** and **JS scripting**, we need a `public/` folder to store static files.
 
 Run the following commands to create the necessary structure:
 
@@ -406,14 +406,21 @@ mkdir public
 mkdir public/css
 touch public/css/style.css
 ```
+
+```sh
+mkdir public/js
+touch public/js/script.js
+```
 ---
 
 ### 📂 Updated Folder Structure:
 ```
 task-manager/
 │-- public/
-│   └── css/
-│       └── style.css
+│   ├── css/
+│   │   └── style.css
+│   ├── js/
+│   │   └── script.js   <-- JavaScript file
 │-- views/
 │   └── index.ejs
 │-- routes/
@@ -422,12 +429,13 @@ task-manager/
 │-- server.js
 │-- package.json
 │-- README.md
+
 ```
 ---
 
 ### Add Styling in `style.css`
 Write a css file in the `public/css/style.css`
-
+Write a js file in the `public/css/script.css`
 ---
 ### Update file named `server.js`
 ```js
@@ -464,7 +472,7 @@ app.listen(PORT, () => {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Manager</title>
-    <link rel="stylesheet" href="/css/style.css"> <!-- Link to CSS -->
+    <link rel="stylesheet" href="/css/style.css"> <!-- Link CSS -->
 </head>
 <body>
     <h1>Task Manager</h1>
@@ -476,7 +484,7 @@ app.listen(PORT, () => {
             <% tasks.forEach((task, index) => { %>
                 <li>
                     <%= task %> 
-                    <a href="/delete/<%= index %>">❌</a>
+                    <a href="/delete/<%= index %>" class="delete-task">❌</a>
                 </li>
             <% }) %>
         </ul>
@@ -486,6 +494,8 @@ app.listen(PORT, () => {
             <button type="submit">Add Task</button>
         </form>
     </section>
+
+    <script src="/js/script.js"></script> <!-- Link JavaScript -->
 </body>
 </html>
 

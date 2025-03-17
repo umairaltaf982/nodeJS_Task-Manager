@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Manager</title>
-    <link rel="stylesheet" href="/css/style.css"> <!-- Link to CSS -->
+    <link rel="stylesheet" href="/css/style.css"> <!-- Link CSS -->
 </head>
 <body>
     <h1>Task Manager</h1>
@@ -16,7 +16,7 @@
             <% tasks.forEach((task, index) => { %>
                 <li>
                     <%= task %> 
-                    <a href="/delete/<%= index %>">❌</a>
+                    <a href="/delete/<%= index %>" class="delete-task">❌</a>
                 </li>
             <% }) %>
         </ul>
@@ -26,5 +26,7 @@
             <button type="submit">Add Task</button>
         </form>
     </section>
+
+    <script src="/js/script.js"></script> <!-- Link JavaScript -->
 </body>
 </html>
