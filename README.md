@@ -289,5 +289,86 @@ pkill -f node
 
 ---
 
+## 🖥️ Step 7: Integrating EJS (Embedded JavaScript)
+
+### What is EJS?
+**EJS (Embedded JavaScript)** is a templating engine for Node.js that allows you to **generate dynamic HTML pages** using JavaScript.
+
+### Why Use EJS?
+- Helps **render dynamic data** in HTML.
+- Supports **JavaScript logic** inside templates.
+- Allows **code reusability** via partials.
+
+---
+
+## 📌 Step 8: Installing EJS
+Run the following command to install EJS in your project:
+```sh
+npm install ejs
+```
+
+---
+
+## 📌 Step 9: Updating `server.js` to Use EJS
+Modify `server.js` to configure EJS as the template engine:
+
+```js
+const express = require("express");
+const app = express();
+const taskRoutes = require("./routes/taskRoutes");
+const fs = require("fs");
+
+app.set("view engine", "ejs"); // Set EJS as the template engine
+app.use(express.json());
+app.use("/tasks", taskRoutes);
+
+// Read tasks and render the EJS page
+app.get("/", (req, res) => {
+    const tasks = JSON.parse(fs.readFileSync("./tasks.json", "utf8") || "[]");
+    res.render("index", { tasks });
+});
+
+const PORT = 5001;
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
+```
+
+## 📌 Step 10: Creating the `views/` Folder  
+
+EJS templates are stored inside the `views/` folder. Create this directory:  
+```sh
+mkdir views
+```
+
+### Add a folder in project and add a file in it named 
+``````
+task-manager/
+│-- views/
+|      └── index.ejs                 
+        
+``````
+## 📌 Step 11: Writing HTML in index.ejs
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+</head>
+<body>
+    <h1>Task Manager</h1>
+    <ul>
+        <% tasks.forEach(task => { %>
+            <li><%= task %></li>
+        <% }); %>
+    </ul>
+</body>
+</html>
+```
+
+
+---
 ## 🎉 Congratulations! 🎉
 You have successfully built a **Task Manager API using Node.js and Express.js!** 🚀

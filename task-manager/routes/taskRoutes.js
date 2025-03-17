@@ -1,57 +1,50 @@
 const express = require("express");
-const fs = require("fs"); // Import the file system module to read and write JSON files
+const fs = require("fs");
+const path = require("path");
+
 const router = express.Router();
+const filePath = path.join(__dirname, "../tasks.json");
 
-const filePath = "./tasks.json"; // Path to JSON file
-
-// Function to read tasks from JSON file
+// Function to Read Tasks
 const readTasks = () => {
     try {
-        const data = fs.readFileSync(filePath, "utf8"); // Read the JSON file
+        const data = fs.readFileSync(filePath, "utf8");
         return JSON.parse(data);
     } catch (error) {
-        return []; // Return empty array if file doesn't exist
+        return [];
     }
 };
 
-// Function to write tasks to JSON file
-const writeTasks = (tasks) => {
-    fs.writeFileSync(filePath, JSON.stringify(tasks, null, 2)); // Write updated task list to file
-};
-
-// GET /tasks - Fetch all tasks
+// Render Home Page with Tasks
 router.get("/", (req, res) => {
     const tasks = readTasks();
-    res.json(tasks);
+    res.render("index", { tasks });
 });
 
-// POST /tasks - Add a task
-router.post("/", (req, res) => {
+// Add New Task (POST Request)
+router.post("/add", (req, res) => {
     const { task } = req.body;
-    if (!task) {
-        return res.status(400).json({ error: "Task is required" });
-    }
+    if (!task) return res.status(400).send("Task is required");
 
     const tasks = readTasks();
     tasks.push(task);
-    writeTasks(tasks); // Save updated tasks to JSON file
+    fs.writeFileSync(filePath, JSON.stringify(tasks, null, 2));
 
-    res.json({ message: "Task added successfully", tasks });
+    res.redirect("/");
 });
 
-// DELETE /tasks/:index - Remove a task
-router.delete("/:index", (req, res) => {
+// Delete Task
+router.get("/delete/:index", (req, res) => {
     const tasks = readTasks();
     const index = parseInt(req.params.index);
 
-    if (isNaN(index) || index < 0 || index >= tasks.length) {
-        return res.status(400).json({ error: "Invalid task index" });
-    }
+    if (isNaN(index) || index < 0 || index >= tasks.length)
+        return res.status(400).send("Invalid task index");
 
-    const deletedTask = tasks.splice(index, 1);
-    writeTasks(tasks); // Save updated tasks to JSON file after deletion
+    tasks.splice(index, 1);
+    fs.writeFileSync(filePath, JSON.stringify(tasks, null, 2));
 
-    res.json({ message: "Task deleted successfully", deletedTask, tasks });
+    res.redirect("/");
 });
 
 module.exports = router;

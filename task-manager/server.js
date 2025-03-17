@@ -1,13 +1,21 @@
 const express = require("express");
-const taskRoutes = require("./routes/taskRoutes"); // Import routes
+const path = require("path");
+const taskRoutes = require("./routes/taskRoutes");
 
 const app = express();
+
+// Set EJS as the template engine
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // To parse form data
+
+// Use Routes
+app.use("/", taskRoutes);
+
 const PORT = 5001;
-
-app.use(express.json()); // Enable JSON body parsing
-
-app.use("/tasks", taskRoutes); // ✅ Use the task routes
-
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
