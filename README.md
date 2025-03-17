@@ -434,8 +434,8 @@ task-manager/
 ---
 
 ### Add Styling in `style.css`
-Write a css file in the `public/css/style.css`
-Write a js file in the `public/css/script.css`
+* Write a css file in the `public/css/style.css`
+* Write a js file in the `public/css/script.css`
 ---
 ### Update file named `server.js`
 ```js
