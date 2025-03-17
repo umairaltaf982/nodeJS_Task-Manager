@@ -393,8 +393,115 @@ Create the `index.ejs` file inside the `views/` folder and add the following cod
 </html>
 
 ```
+---
+
+## 📌 Step 12: Writing CSS and updating `index.ejs` and `server.js`
+### Create a `public/` Folder 
+To include **CSS styling**, we need a `public/` folder to store static files.
+
+Run the following commands to create the necessary structure:
+
+```sh
+mkdir public
+mkdir public/css
+touch public/css/style.css
+```
+---
+
+### 📂 Updated Folder Structure:
+```
+task-manager/
+│-- public/
+│   └── css/
+│       └── style.css
+│-- views/
+│   └── index.ejs
+│-- routes/
+│   └── taskRoutes.js
+│-- tasks.json
+│-- server.js
+│-- package.json
+│-- README.md
+```
+---
+
+### Add Styling in `style.css`
+Write a css file in the `public/css/style.css`
 
 ---
+### Update file named `server.js`
+```js
+const express = require("express");
+const path = require("path");
+const taskRoutes = require("./routes/taskRoutes");
+
+const app = express();
+
+// Set EJS as the template engine
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // To parse form data
+app.use(express.static(path.join(__dirname, "public"))); // Serve static files
+
+// Use Routes
+app.use("/", taskRoutes);
+
+const PORT = 5001;
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
+
+```
+---
+### Update file named `index.ejs`
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="/css/style.css"> <!-- Link to CSS -->
+</head>
+<body>
+    <h1>Task Manager</h1>
+
+    <section>
+        <h2>Your Tasks</h2>
+
+        <ul>
+            <% tasks.forEach((task, index) => { %>
+                <li>
+                    <%= task %> 
+                    <a href="/delete/<%= index %>">❌</a>
+                </li>
+            <% }) %>
+        </ul>
+
+        <form action="/add" method="POST">
+            <input type="text" name="task" placeholder="Enter new task" required>
+            <button type="submit">Add Task</button>
+        </form>
+    </section>
+</body>
+</html>
+
+```
+---
+### Restart and Run Server
+You can do it by killing the server first by and restart node:
+```sh
+pkill -f node
+node server.js
+```
+or by using nodemon
+```sh
+nodemon server.js
+```
+
 
 ## 🎉 Congratulations! 🎉  
 You have successfully built a **Task Manager** using **Node.js, Express, and EJS!** 🚀  

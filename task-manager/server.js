@@ -11,6 +11,7 @@ app.set("views", path.join(__dirname, "views"));
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // To parse form data
+app.use(express.static(path.join(__dirname, "public"))); // Serve static files
 
 // Use Routes
 app.use("/", taskRoutes);
