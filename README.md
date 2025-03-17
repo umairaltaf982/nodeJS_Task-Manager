@@ -316,24 +316,27 @@ Modify `server.js` to configure EJS as the template engine:
 
 ```js
 const express = require("express");
-const app = express();
+const path = require("path");
 const taskRoutes = require("./routes/taskRoutes");
-const fs = require("fs");
 
-app.set("view engine", "ejs"); // Set EJS as the template engine
+const app = express();
+
+// Set EJS as the template engine
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+// Middleware
 app.use(express.json());
-app.use("/tasks", taskRoutes);
+app.use(express.urlencoded({ extended: true })); // To parse form data
 
-// Read tasks and render the EJS page
-app.get("/", (req, res) => {
-    const tasks = JSON.parse(fs.readFileSync("./tasks.json", "utf8") || "[]");
-    res.render("index", { tasks });
-});
+// Use Routes
+app.use("/", taskRoutes);
 
 const PORT = 5001;
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
+
 ```
 
 ---
@@ -368,13 +371,27 @@ Create the `index.ejs` file inside the `views/` folder and add the following cod
 </head>
 <body>
     <h1>Task Manager</h1>
-    <ul>
-        <% tasks.forEach(task => { %>
-            <li><%= task %></li>
-        <% }); %>
-    </ul>
+
+    <section>
+        <h2>Your Tasks</h2>
+
+        <ul>
+            <% tasks.forEach((task, index) => { %>
+                <li>
+                    <%= task %> 
+                    <a href="/delete/<%= index %>">❌</a>
+                </li>
+            <% }) %>
+        </ul>
+
+        <form action="/add" method="POST">
+            <input type="text" name="task" placeholder="Enter new task" required>
+            <button type="submit">Add Task</button>
+        </form>
+    </section>
 </body>
 </html>
+
 ```
 
 ---
