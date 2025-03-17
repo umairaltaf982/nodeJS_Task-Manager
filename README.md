@@ -301,16 +301,18 @@ pkill -f node
 
 ---
 
-## 📌 Step 8: Installing EJS
-Run the following command to install EJS in your project:
+# Task Manager with EJS  
+
+## 📌 Step 8: Installing EJS  
+Run the following command to install EJS in your project:  
 ```sh
 npm install ejs
 ```
 
 ---
 
-## 📌 Step 9: Updating `server.js` to Use EJS
-Modify `server.js` to configure EJS as the template engine:
+## 📌 Step 9: Updating `server.js` to Use EJS  
+Modify `server.js` to configure EJS as the template engine:  
 
 ```js
 const express = require("express");
@@ -334,6 +336,8 @@ app.listen(PORT, () => {
 });
 ```
 
+---
+
 ## 📌 Step 10: Creating the `views/` Folder  
 
 EJS templates are stored inside the `views/` folder. Create this directory:  
@@ -341,14 +345,19 @@ EJS templates are stored inside the `views/` folder. Create this directory:
 mkdir views
 ```
 
-### Add a folder in project and add a file in it named 
-``````
+### Folder Structure Update:  
+```
 task-manager/
 │-- views/
 |      └── index.ejs                 
-        
-``````
-## 📌 Step 11: Writing HTML in index.ejs
+```
+
+---
+
+## 📌 Step 11: Writing HTML in `index.ejs`  
+
+Create the `index.ejs` file inside the `views/` folder and add the following code:  
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -368,7 +377,7 @@ task-manager/
 </html>
 ```
 
-
 ---
-## 🎉 Congratulations! 🎉
-You have successfully built a **Task Manager API using Node.js and Express.js!** 🚀
+
+## 🎉 Congratulations! 🎉  
+You have successfully built a **Task Manager** using **Node.js, Express, and EJS!** 🚀  
