@@ -301,45 +301,38 @@ pkill -f node
 
 ---
 
-# Task Manager with EJS  
-
-## 📌 Step 8: Installing EJS  
-Run the following command to install EJS in your project:  
+## 📌 Step 8: Installing EJS
+Run the following command to install EJS in your project:
 ```sh
 npm install ejs
 ```
 
 ---
 
-## 📌 Step 9: Updating `server.js` to Use EJS  
-Modify `server.js` to configure EJS as the template engine:  
+## 📌 Step 9: Updating `server.js` to Use EJS
+Modify `server.js` to configure EJS as the template engine:
 
 ```js
 const express = require("express");
-const path = require("path");
-const taskRoutes = require("./routes/taskRoutes");
-
 const app = express();
+const taskRoutes = require("./routes/taskRoutes");
+const fs = require("fs");
 
-// Set EJS as the template engine
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
-
-// Middleware
+app.set("view engine", "ejs"); // Set EJS as the template engine
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // To parse form data
+app.use("/tasks", taskRoutes);
 
-// Use Routes
-app.use("/", taskRoutes);
+// Read tasks and render the EJS page
+app.get("/", (req, res) => {
+    const tasks = JSON.parse(fs.readFileSync("./tasks.json", "utf8") || "[]");
+    res.render("index", { tasks });
+});
 
 const PORT = 5001;
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
-
 ```
-
----
 
 ## 📌 Step 10: Creating the `views/` Folder  
 
@@ -348,19 +341,14 @@ EJS templates are stored inside the `views/` folder. Create this directory:
 mkdir views
 ```
 
-### Folder Structure Update:  
-```
+### Add a folder in project and add a file in it named 
+``````
 task-manager/
 │-- views/
 |      └── index.ejs                 
-```
-
----
-
-## 📌 Step 11: Writing HTML in `index.ejs`  
-
-Create the `index.ejs` file inside the `views/` folder and add the following code:  
-
+        
+``````
+## 📌 Step 11: Writing HTML in index.ejs
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -371,30 +359,16 @@ Create the `index.ejs` file inside the `views/` folder and add the following cod
 </head>
 <body>
     <h1>Task Manager</h1>
-
-    <section>
-        <h2>Your Tasks</h2>
-
-        <ul>
-            <% tasks.forEach((task, index) => { %>
-                <li>
-                    <%= task %> 
-                    <a href="/delete/<%= index %>">❌</a>
-                </li>
-            <% }) %>
-        </ul>
-
-        <form action="/add" method="POST">
-            <input type="text" name="task" placeholder="Enter new task" required>
-            <button type="submit">Add Task</button>
-        </form>
-    </section>
+    <ul>
+        <% tasks.forEach(task => { %>
+            <li><%= task %></li>
+        <% }); %>
+    </ul>
 </body>
 </html>
-
 ```
 
----
 
-## 🎉 Congratulations! 🎉  
-You have successfully built a **Task Manager** using **Node.js, Express, and EJS!** 🚀  
+---
+## 🎉 Congratulations! 🎉
+You have successfully built a **Task Manager API using Node.js and Express.js!** 🚀
